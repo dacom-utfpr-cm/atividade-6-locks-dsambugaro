@@ -7,13 +7,14 @@ package EX3;
 
 import java.util.Random;
 
-public class Producer implements Runnable {
+public class Writer implements Runnable {
 
     private Random r = new Random();
-    private SharedFifoQueue circularMonitorBuffer;
+    private ArrayListThreadSafe<Integer> array;
 
-    public Producer(SharedFifoQueue circularMonitorBuffer) {
-        this.circularMonitorBuffer = circularMonitorBuffer;
+    public Writer(ArrayListThreadSafe array) {
+        this.array = array;
+
     }
 
     @Override
@@ -22,8 +23,8 @@ public class Producer implements Runnable {
 
             try {
                 // Produz um número aleatório e o coloca no buffer
-                circularMonitorBuffer.put(r.nextInt());
-                System.out.println("[ " + Thread.currentThread().getName() + " ] Producing...");
+                array.add(r.nextInt());
+                System.out.println("[ " + Thread.currentThread().getName() + " ] Writing...");
 
                 // Gera um número aleatório entre 1000 e 5000
                 int sleepTime = r.nextInt((5000 - 1000) + 1) + 1000;

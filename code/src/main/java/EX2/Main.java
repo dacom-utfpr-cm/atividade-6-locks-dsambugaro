@@ -1,9 +1,10 @@
-package EX1;
+package EX2;
 /*
- * Exercicio 1
- * Implemente uma solução com monitor para o problema do Produtor-Consumidor usando um buffer circular.
+ * Exercicio 2
+ * Crie uma classe SharedFifoQueue e use Conditions para controlar se a fila está vazia ou cheia.
+ * Teste usando threads produtoras e consumidoras.
  *
- * @author Danilo Sambugaro created on 17/09/2019 inside the package - EX1
+ * @author Danilo Sambugaro created on 28/10/2019 inside the package - EX2
  *
  */
 
@@ -14,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
 
         // Instancia o buffer circular e as classes produtor e consumidor
-        CircularMonitorBuffer circularMonitorBuffer = new CircularMonitorBuffer(50);
+        SharedFifoQueue circularMonitorBuffer = new SharedFifoQueue(50);
         Producer producer = new Producer(circularMonitorBuffer);
         Consumer consumer = new Consumer(circularMonitorBuffer);
 

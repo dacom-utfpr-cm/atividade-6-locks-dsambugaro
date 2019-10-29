@@ -1,7 +1,7 @@
-package EX1;
+package EX2;
 /*
  *
- * @author Danilo Sambugaro created on 10/09/2019 inside the package - ProducerConsumer
+ * @author Danilo Sambugaro 28/10/2019 inside the package - EX2
  *
  */
 
@@ -9,9 +9,10 @@ import java.util.Random;
 
 public class Consumer implements Runnable {
 
-    private CircularMonitorBuffer circularMonitorBuffer;
+    private Random r = new Random();
+    private SharedFifoQueue circularMonitorBuffer;
 
-    public Consumer(CircularMonitorBuffer circularMonitorBuffer) {
+    public Consumer(SharedFifoQueue circularMonitorBuffer) {
         this.circularMonitorBuffer = circularMonitorBuffer;
     }
 
@@ -26,7 +27,6 @@ public class Consumer implements Runnable {
                 Integer pop = circularMonitorBuffer.pop();
                 System.out.println("[ " + Thread.currentThread().getName() + " ] Consuming " + pop);
 
-                Random r = new Random();
                 // Gera um número aleatório entre 1000 e 5000
                 int sleepTime = r.nextInt((5000 - 1000) + 1) + 1000;
                 Thread.sleep(sleepTime); // Dorme por sleepTime milisegundos

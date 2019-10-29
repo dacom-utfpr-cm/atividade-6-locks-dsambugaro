@@ -1,4 +1,4 @@
-package EX2;
+package EX3;
 /*
  *
  * @author Danilo Sambugaro created on 28/10/2019 inside the package - EX2
@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class SharedFifoQueue {
 
-    private Integer buffer[];
+    private ArrayListThreadSafe<Integer> buffer;
     private int qtElements;
     private int start;
     private int end;
@@ -21,7 +21,7 @@ public class SharedFifoQueue {
 
 
     SharedFifoQueue(int bufferSize) {
-        buffer = new Integer[bufferSize];
+        this.buffer = new ArrayListThreadSafe<Integer>(bufferSize);
     }
 
     private boolean isEmpty() {
@@ -34,7 +34,7 @@ public class SharedFifoQueue {
 
     private boolean isFull() {
         // Retorna verdadeiro caso o buffer esteja cheio ou falso caso contrário
-        if (qtElements == buffer.length) {
+        if (qtElements == buffer.size()) {
             return true;
         }
         return false;
@@ -46,13 +46,11 @@ public class SharedFifoQueue {
             isFullCondition.await();
         }
 
-        // Insere um elemento no buffer e move o ponteiro de inicio
-        buffer[start] = n;
+        buffer.add(start, n);
         qtElements++;
-        start = ++start % buffer.length;
+        start = ++start % buffer.size();
 
         if (this.isFull()) {
-            // se estiver cheio, libera o consumidor
             isEmptyCondition.signal();
         }
 
@@ -68,8 +66,9 @@ public class SharedFifoQueue {
 
         // Consume um elemento do buffer, movendo o ponteiro de fim
         qtElements--;
-        int element = buffer[end];
-        end = ++end % buffer.length;
+        int element = (int) buffer.get(end);
+        buffer.remove(end);
+        end = ++end % buffer.size();
 
         if (this.isEmpty()) {
             // Se estiver vazio, libera o produtor

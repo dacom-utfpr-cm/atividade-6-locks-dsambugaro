@@ -1,7 +1,7 @@
-package EX1;
+package EX2;
 /*
  *
- * @author Danilo Sambugaro created on 10/09/2019 inside the package - ProducerConsumer
+ * @author Danilo Sambugaro created on 28/10/2019 inside the package - EX2
  *
  */
 
@@ -9,9 +9,10 @@ import java.util.Random;
 
 public class Producer implements Runnable {
 
-    private CircularMonitorBuffer circularMonitorBuffer;
+    private Random r = new Random();
+    private SharedFifoQueue circularMonitorBuffer;
 
-    public Producer(CircularMonitorBuffer circularMonitorBuffer) {
+    public Producer(SharedFifoQueue circularMonitorBuffer) {
         this.circularMonitorBuffer = circularMonitorBuffer;
     }
 
@@ -21,7 +22,6 @@ public class Producer implements Runnable {
 
             try {
                 // Produz um número aleatório e o coloca no buffer
-                Random r = new Random();
                 circularMonitorBuffer.put(r.nextInt());
                 System.out.println("[ " + Thread.currentThread().getName() + " ] Producing...");
 

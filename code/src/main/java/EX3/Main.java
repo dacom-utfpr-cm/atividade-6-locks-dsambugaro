@@ -1,8 +1,8 @@
-package EX2;
+package EX3;
 /*
- * Exercicio 2
- * Crie uma classe SharedFifoQueue e use Conditions para controlar se a fila está vazia ou cheia.
- * Teste usando threads produtoras e consumidoras.
+ * Exercicio 3
+ * Faça uma classe ArrayListThreadSafe usando ReadWriteLock.
+ * Teste usando threads que realizam leitura e escrita para essa estrutura.
  *
  * @author Danilo Sambugaro created on 28/10/2019 inside the package - EX2
  *
@@ -14,21 +14,21 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Instancia o buffer circular e as classes produtor e consumidor
-        SharedFifoQueue circularMonitorBuffer = new SharedFifoQueue(50);
-        Producer producer = new Producer(circularMonitorBuffer);
-        Consumer consumer = new Consumer(circularMonitorBuffer);
+        ArrayListThreadSafe<Integer> integerArrayListThreadSafe = new ArrayListThreadSafe<>();
+
+        Writer writer = new Writer(integerArrayListThreadSafe);
+        Reader reader = new Reader(integerArrayListThreadSafe);
 
         Random r = new Random();
-        int qtProducersConsumers = r.nextInt((5 - 2) + 1) + 2; // Gera um número aleatório entre 2 e 5
+        int qtReadersWriters = r.nextInt((5 - 2) + 1) + 2; // Gera um número aleatório entre 2 e 5
 
-        // Cria qtProducersConsumers threads de produtores e consumidores e as inicia
-        for (int i = 0; i < qtProducersConsumers; i++) {
-            Thread producerThread = new Thread(producer, "ProducerThread " + i);
-            Thread consumerThread = new Thread(consumer, "ConsumerThread " + i);
+        // Cria qtReadersWriters threads de produtores e consumidores e as inicia
+        for (int i = 0; i < qtReadersWriters; i++) {
+            Thread writerThread = new Thread(writer, "Writer " + i);
+            Thread readerThread = new Thread(reader, "Reader " + i);
 
-            producerThread.start();
-            consumerThread.start();
+            writerThread.start();
+            readerThread.start();
         }
 
     }
